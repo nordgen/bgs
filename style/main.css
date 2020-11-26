@@ -1,0 +1,391 @@
+@charset "utf-8";
+/* CSS Document */
+
+body {
+	margin-left:12px;
+	margin-right:12px;
+	margin-bottom:20px;
+}
+
+#topdiv {
+	font-family: Arial, Helvetica, sans-serif;
+	background-color: #CCC;
+	height:95px;
+}
+#logindiv {
+	/* background-color: #99F; */
+	position: relative;
+	float: right;
+	margin-right: 20px;
+	margin-top: 10px;
+	background-color: #CCC;
+	font-size: 12px
+}
+#logindiv input {
+	font-size: 12px;
+	max-width: 80px;
+
+}
+
+#navdiv {
+	/* background-color: #3C9; */
+	position: relative;
+	float: left;
+	margin-left: 30px;
+	margin-top: 10px;
+	width: 60%;
+	text-align: center;
+	background-color: #CCC;
+}
+
+#topnav {
+	text-align: center;
+	padding-bottom: 10px;
+}
+
+
+
+#centerdiv {
+	/* background-color: #eee; */
+	clear:both;
+}
+
+.ul_sel {
+	font-size:14px;
+	padding:6px;
+}
+.ul_columns_li {
+	padding:3px;
+	list-style-type:none;
+}
+.ul_columns_li_unsel {
+	background-color:white;
+	color:black;
+}
+.ul_columns_li_sel {
+	background-color:#C63;
+	color:white;
+}
+.ul_data_header {
+	font-weight:bold;
+}
+
+.ul_data_cell_edt {
+	background-color:#6CF;
+}
+
+.ul_data_abutton {
+	padding:3px;
+	background-color:#fff;
+	text-decoration:none;
+	color:#000;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:12px;
+	margin:3px;
+	border:solid 1px #000;
+}
+
+#ul_data_table {
+	border:#000 1px solid;
+}
+
+#ul_data_table td {
+	font-size:12px;
+	border:#000 1px solid;
+	padding:3px;
+}
+
+#data_list_div {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	background-color: #CC9;
+	padding: 12px;
+	width: 270px;
+	display: block;
+	float: right;
+}
+#sel_ul_div {
+	font-family: Arial, Helvetica, sans-serif;
+	background-color: #FFF;
+	float: left;
+}
+
+#new_col_div {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size:12px;
+	margin-left:35px;
+}
+
+
+
+#ul_data_div {
+	/* background-color:#C9F; */
+	clear:left;
+	overflow:scroll;
+}
+
+/* Styles for bgs_show */
+
+#fullsize {
+	position:absolute;
+	top:150px;
+	left:46px;
+	z-index:100;
+	/* width: 800px; */
+	background-color: #FFFFFF;
+	layer-background-color: #FFFFFF;
+	border: 3px solid #000000;
+	visibility: hidden;
+}
+
+.largeimg_caption {
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:16px;
+}
+.section_button {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 18px;
+	font-weight: normal;
+	text-align: left;
+}
+.section_move {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	font-weight: normal;
+	text-align: left;
+	padding-left:150px;
+}
+.edtimgdiv {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 18px;
+	font-weight: normal;
+	text-align: left;
+	margin-bottom:6px;
+}
+.sectiondiv {
+	font-family: "Times New Roman", Times, serif;
+	font-size: medium;
+	font-weight: normal;
+	text-align: left;
+	padding: 6px;
+}
+.sectiondiv_edit {
+	background-color: #ddd;
+	border: 2px dotted #000;
+	line-height: 24px;
+	padding-left: 15px;
+	padding-right: 15px;
+}
+.edittab td {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	text-align: left;
+	vertical-align: bottom;
+	padding: 6px;
+	border: 1px solid #000;
+}
+
+#editimgh1 {
+	float:left;
+	margin-bottom:24px;
+	margin-top:18px;
+	margin-left:12px;	
+}
+.edit_head {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 18px;
+	font-weight: normal;
+	text-align: left;
+}
+
+.useradmintab{
+	margin-bottom:30px;	
+}
+
+.useradmintab td {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	text-align: left;
+	vertical-align: bottom;
+	padding: 6px;
+}
+
+.tabhead {
+	font-weight:bold;
+}
+
+.headspan {
+	font-family: "Times New Roman", Times, serif;
+	font-size: medium;
+	font-weight: normal;
+	text-align: left;
+	padding: 6px;
+}
+
+.headspan_edit {
+	background-color: #ddd;
+	border: 2px dotted #000;
+	line-height: 24px;
+	padding-left: 15px;
+}
+
+.link1 {
+	float:right;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:18px;
+	margin-bottom:24px;
+	margin-top:18px;
+	margin-right:12px;	
+}
+.head5 {
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:12px;
+	font-weight:bold;
+	margin-bottom:4px;
+}
+.leftnavitem {
+	padding-right: 0;
+}
+.rightnavitem {
+	padding-left: 5px;
+}
+#searchlabel {
+	font-size: 16px;
+}
+#titlediv {
+	font-family: "Courier New", Courier, monospace;
+	font-size: 12px;
+	font-weight: bold;
+	letter-spacing: 0.6em;
+	text-align: center;
+}
+
+#frontimgdiv {
+	text-align: center;
+}
+#frontimgdiv img {
+	padding: 3px;
+}
+
+#frptitle {
+	text-align: center;
+	font-family: "Times New Roman", Times, serif;
+	font-size: 28px;
+	border-bottom:1px #000 solid;
+	margin-top:8px;
+}
+
+.errormess {
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:18px;
+	font-weight:bold;
+	color:#F00;
+	text-align:center;
+	padding:12px;
+}
+
+.editblock {
+
+	border-top:1px #000 solid;
+	margin-top:25px;
+	margin-bottom:18px;
+	
+}
+
+.editblock input{
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 18px;
+}
+
+.editblock select{
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 18px;
+}
+
+.edit_section {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 18px;
+	font-weight: normal;
+	text-align: left;
+	margin-bottom:25px;
+	background-color:#CCC
+}
+
+.edit_section2 {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 18px;
+	font-weight: normal;
+	text-align: left;
+	margin-bottom:25px;
+	background-color:#999;
+	padding:2px;
+}
+#addnewbgstab td {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	padding: 4px;
+}
+
+.inputhelptxt {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	padding-left:25px;
+}
+
+#deldocdiv{
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:12px;
+	text-align:right;
+}
+.edit_ta{
+	/* background-color:#36F; */
+	width:100%;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:14px;
+}
+
+#tablestitle {
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:16px;
+	padding-bottom:12px;
+	padding-left:6px;
+	
+}
+#bgstab td{
+	padding:3px;
+	font-family:"Times New Roman", Times, serif;
+	font-size:14px;
+	font-weight:normal;
+	text-align:left;
+}
+
+.bgstabhead th {
+	border-bottom: #000 1px solid;
+	border-top: #000 1px solid;
+	text-align: left;
+	font-family: "Times New Roman", Times, serif;
+	font-size: 16px;
+	font-weight: bold;
+	padding: 6px;
+
+}
+
+.bgnlink {
+	color: #000;
+	text-decoration: underline;
+	padding-right: 40px;
+}
+
+table.minimize {
+	border-collapse: collapse;
+	border-spacing: 0;
+	border-width: 0;
+}
+
+table.no-cell-padding td, table.minimize td {
+	padding: 0;
+}
+
+table.minimize.pad8 td {
+	padding: 8px;
+}
