@@ -29,7 +29,7 @@
     "php": ">=5.3.0",
     "adodb/adodb-php": "^5.20",
     "zendframework/zend-db": "^2.9",
-    "zendframework/C": "^3.2",
+    "zendframework/c": "^3.2",
     "pear/log": "^1.12",
     "ajant/simple-array-library": "^4.2",
     "nordgen/db-batch": "^2.0",
