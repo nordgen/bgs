@@ -53,14 +53,10 @@ $ul = (isset($_REQUEST['ul']) && $_REQUEST['ul'] != "")
 </div>
 
 <?php
-//if((!isset($ul_data) || count($ul_data)==0) && isset($ul_columns) && count($ul_columns) >0){
 if (isset($ul_columns) && count($ul_columns) > 0) {
 //Show columns
     ?>
     <div id="data_list_div">
-        <?php
-        //if(isset($ul_columns)){
-        ?>
         <?php echo $ul . "&nbsp;-&nbsp;" . $thisulname; ?><br><span id="selColCbLab"><label for="selAllULColCB">Select all</label></span>&nbsp;&nbsp;&nbsp;<input
                 id="selAllULColCB" type="checkbox" onclick="selAllULColumns()"><input type="button" value="Show"
                                                                                       onClick="showULData(this.form)"><input
@@ -100,11 +96,9 @@ if (isset($ul_columns) && count($ul_columns) > 0) {
                 </select></div>
 <?php
 	} //End show add new column control
-	
-//} ?>
+?>
 </div>
 <?php } 
-//elseif(isset($ul_data) && count($ul_data)>0){
 ?>
 </form>
 <div id="statusDiv"></div>

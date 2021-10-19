@@ -42,23 +42,14 @@ foreach($colidarr as $cid){
 }
  
 $q .= ") order by d.row_id, c.ord";
-//echo "<br>".$q."<br>";	
 try {
     $rs = [];
     if (empty($ul)) {
         throw new Exception("no_ul");
     }
     $rs = $Zdb->query($q)->getQueryResultSet();
-    //echo "<br>".$q."<br>";
 } catch (exception $e) {
     echo "Error selecting ul: " . $e->getMessage();
-    /*	Implement logging
-        logMess("E","error fetching tests, q:".$q);
-        if($debug){
-            logMess("D",var_dump($e));
-            logMess("D",adodb_backtrace($e->gettrace()));
-        }
-    */
 }
 
 //Now put it in a structure that help us draw the table without requiring values for all row-column nodes
@@ -76,17 +67,14 @@ $cols_order = array();
 			$cols_order[$row['colid']] = $row['colname'];
 			
 			//***** Save coded value names here also, for columns of data_type=1
-			
-			
+
 		}
 	} //Loop through results
 $newcolname = '';
 if($newcolid > 0) { //We also have a new column, get its name
     $q = "select distinct c.name as colname FROM bgs_ul_data_column c WHERE c.id=" . $newcolid;
     try {
-
         $newcolname = $Zdb->queryScalar($q);
-        //echo "<br>".$q."<br>";
     } catch (exception $e) {
         echo "Error selecting name, $q: " . $q . " - " . $e->getMessage();
     }
@@ -94,7 +82,6 @@ if($newcolid > 0) { //We also have a new column, get its name
 
 ?>
 
-    <!-- <link rel="stylesheet" type="text/css" href="style/main.css" > -->
     <form name="ul_data_column_form" action="index.php">
         <input type="hidden" name="pg">
         <input type="hidden" name="act">
@@ -107,7 +94,6 @@ if($newcolid > 0) { //We also have a new column, get its name
             ?>
             <table id="ul_data_table" class="minimize">
                 <tr class="ul_data_header">
-                    <!--<td>Row</td>-->
 
                     <?php //First print header row
                     foreach ($cols_order as $colid => $colname) {
@@ -125,8 +111,6 @@ if($newcolid > 0) { //We also have a new column, get its name
 		$nrow++;
 		echo "<tr>";
 		
-		//echo"<td>".$nrow."</td>";
-	
 		foreach($cols_order as $colid=> $colname){
 			if(isset($alldata[$rowid][$colid])){ 
             	$value = $alldata[$rowid][$colid];	

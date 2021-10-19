@@ -1,11 +1,8 @@
 <?php
-
 $maxuploadsize = 10485760;  //bytes; =10MB
 $supported_uploads = array("image/jpeg","image/png","image/tiff","image/x-tiff");
 
-
 //common functions
-
 function isLoggedin(){
 	if(!isset($_SESSION["isloggedin"])){
 		return false;

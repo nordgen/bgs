@@ -36,8 +36,6 @@ require_once("./common.php");
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
-//use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-
 global $Zdb;
 
 $coldes = array("A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "AA", "AB", "AC", "AD", "AE", "AF", "AG", "AH", "AI", "AJ", "AK", "AL", "AM", "AN", "AO", "AP", "AQ", "AR", "AS", "AT", "AU", "AV", "AW", "AX", "AY", "AZ", "BA", "BB", "BC", "BD", "BE", "BF", "BG", "BH", "BI", "BJ", "BK", "BL", "BM", "BN", "BO", "BP", "BQ", "BR", "BS", "BT", "BU", "BV", "BW", "BX", "BY", "BZ", "CA", "CB", "CC", "CD", "CE", "CF", "CG", "CH", "CI", "CJ", "CK", "CL", "CM", "CN", "CO", "CP", "CQ", "CR", "CS", "CT", "CU", "CV", "CW", "CX", "CY", "CZ");
@@ -94,13 +92,6 @@ SQL;
         //echo "<br>".$q."<br>";
     } catch (exception $e) {
         echo "Error selecting ul: " . $e->getMessage();
-        /*	Implement logging
-            logMess("E","error fetching tests, q:".$q);
-            if($debug){
-                logMess("D",$e->getMessage());
-                logMess("D",adodb_backtrace($e->gettrace()));
-            }
-        */
     }
 
 
@@ -142,8 +133,6 @@ SQL;
 		
 		//Write header row
 		$c = 0;
-		//$sheet->setCellValue($coldes[$c]."1", "Row");
-		//$c++;
 		foreach($cols_order as $colid => $colname){
 			$sheet->setCellValue($coldes[$c]."1", $colname);
 			$c++;
@@ -159,8 +148,7 @@ SQL;
 				$nrow++;
 				$xlrow = $nrow+1;
 				//Write row number
-				//$sheet->setCellValue($coldes[$c].$xlrow, $nrow);
-				
+
 				//Write rest of row
 				foreach($cols_order as $colid=> $colname){
 					
@@ -205,9 +193,6 @@ header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
 header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
 header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
 header('Pragma: public'); // HTTP/1.0
-
-//$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
-//$objWriter->save('php://output');
 
 $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
 $writer->save('php://output');

@@ -38,9 +38,6 @@ $header_url = $serverurl . $url_dir . '/pdf/header.html';
 $footer_url = $serverurl . $url_dir . '/pdf/footer.html';
 
 // Set properties like magins, header and footers before calling the content
-//$header_html = file_get_contents($header_url);
-//$footer_html = file_get_contents($footer_url);
-
 header('Content-Type: application/pdf');
 header('Content-Disposition: inline; filename="bgs' . $bgs . '.pdf"');
 echo $snappy->getOutput(

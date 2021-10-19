@@ -4,26 +4,26 @@
     <title></title>
     <script>
         function subst() {
-            var vars = {};
-            var query_strings_from_url = document.location.search.substring(1).split('&');
-            for (var query_string in query_strings_from_url) {
+            let vars = {};
+            let query_strings_from_url = document.location.search.substring(1).split('&');
+            for (let query_string in query_strings_from_url) {
                 if (query_strings_from_url.hasOwnProperty(query_string)) {
-                    var temp_var = query_strings_from_url[query_string].split('=', 2);
+                    let temp_var = query_strings_from_url[query_string].split('=', 2);
                     vars[temp_var[0]] = decodeURI(temp_var[1]);
                 }
             }
-            var css_selector_classes = ['page', 'frompage', 'topage', 'webpage', 'section', 'subsection', 'date', 'isodate', 'time', 'title', 'doctitle', 'sitepage', 'sitepages'];
-            for (var css_class in css_selector_classes) {
+            let css_selector_classes = ['page', 'frompage', 'topage', 'webpage', 'section', 'subsection', 'date', 'isodate', 'time', 'title', 'doctitle', 'sitepage', 'sitepages'];
+            for (let css_class in css_selector_classes) {
                 if (css_selector_classes.hasOwnProperty(css_class)) {
-                    var element = document.getElementsByClassName(css_selector_classes[css_class]);
-                    for (var j = 0; j < element.length; ++j) {
+                    let element = document.getElementsByClassName(css_selector_classes[css_class]);
+                    for (let j = 0; j < element.length; ++j) {
                         element[j].textContent = vars[css_selector_classes[css_class]];
                     }
                 }
             }
         }
     </script>
-    <style type="text/css">
+    <style>
         body {
             border:0;
             margin: 0;
@@ -36,7 +36,6 @@
         table {
             width: 100%;
             border-bottom: 1px solid black;
-            /*margin-bottom: 5mm;*/
         }
 
         img {
