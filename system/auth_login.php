@@ -3,7 +3,7 @@ global $Zdb;
 $md5 = 'md5';
 //Check in db
 $q = "SELECT u.username, u.real_name, r.name as rolename FROM bgs_user u LEFT JOIN bgs_user_role ur ON (u.id=ur.user_id) LEFT JOIN bgs_role r ON (ur.role_id=r.id) WHERE u.password = '{$md5($_POST['pwd'])}' AND u.username='${_POST['user']}' AND u.deleted=0";
-//echo "<br>".$q."<br>";		
+#echo "<br>".$q."<br>";
 
 
 /* */
