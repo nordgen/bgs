@@ -2,8 +2,8 @@
 global $Zdb, $CONF;
 
 try {
-    /** @var Zend\Db\Adapter\Adapter */
-    $zend_db = new Zend\Db\Adapter\Adapter([
+    /** @var \Laminas\Db\Adapter\Adapter */
+    $zend_db = new \Laminas\Db\Adapter\Adapter([
         'driver' => $CONF['dbtype'],
         'hostname' => $CONF['dbhost'],
         'database' => $CONF['dbname'],
