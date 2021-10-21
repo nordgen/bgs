@@ -81,4 +81,3 @@ else { //Value not empty, update or insert
     }
 } //End value !=""
 echo "Value was saved!";
-//echo "ul_data_save, stat=".$stat;

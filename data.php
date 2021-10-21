@@ -29,13 +29,6 @@ if (isset($_REQUEST['ul']) && $_REQUEST['ul'] != "") {
                 //echo "<br>".$q."<br>";
             } catch (exception $e) {
                 echo "Error selecting ul: " . $e->getMessage();
-                /*	Implement logging
-                    logMess("E","error fetching tests, q:".$q);
-                    if($debug){
-                        logMess("D",$e->getMessage());
-                        logMess("D",adodb_backtrace($e->gettrace()));
-                    }
-                */
             }
             foreach ($rs as $row) {
                 if ($row['ul'] == $ul) {

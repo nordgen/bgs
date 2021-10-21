@@ -58,7 +58,7 @@ try {
 <head>
     <meta charset="UTF-8">
     <title><?=$doctitle?></title>
-    <style type="text/css">
+    <style>
 
         body {
             margin: 0;
@@ -74,25 +74,10 @@ try {
 
         @media screen {
             .pagecontent {
-                /*width: 21cm;*/
-                /*min-height: 29.7cm;*/
                 padding-top: 5mm;
                 padding-bottom: 5mm;
-                /*margin: 1cm auto;*/
-/*                border: 1px #D3D3D3 solid;
-                border-radius: 5px;
-                background: white;
-                box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-                page-break-after: always;*/
             }
         }
-
-        /*.subpage {*/
-        /*    padding: 1cm;*/
-        /*    border: 5px red solid;*/
-        /*    height: 256mm;*/
-        /*    outline: 2cm #FFEAEA solid;*/
-        /*}*/
 
         @page {
             size: A4;
@@ -116,15 +101,8 @@ try {
 
             .pagecontent {
                 margin: 0;
-                /*padding-top: 1mm;*/
-                /*padding-bottom: 1mm;*/
-                /*margin: 1cm auto*/
-                /*border: initial;*/
-                /*border-radius: initial;*/
                 width: initial;
                 min-height: initial;
-                /*box-shadow: initial;*/
-                /*background: white;*/
                 page-break-after: always;
                 page-break-inside: avoid;
             }
@@ -132,7 +110,6 @@ try {
 
 
         dl {
-            /*border: 3px double #ccc;*/
             padding: 0.5em;
         }
         dt {
@@ -141,7 +118,6 @@ try {
             width: 16ch;
             text-align: left;
             font-weight: bold;
-            /*color: green;*/
         }
         dt::after {
             content: ":";
@@ -192,7 +168,6 @@ try {
         }
 
         figure {
-            /*float: left;*/
             max-width: 100%;
             max-height: 100%;
             width: fit-content;
@@ -239,7 +214,6 @@ try {
         <?php
     }
 }
-
 ?>
     </div>
 </body>

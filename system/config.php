@@ -1,12 +1,12 @@
 <?php
 /**
- *  * Put all configuration that is not in db here
- *   *
- *    */
+ * Put all configuration that is not in db here
+ *
+ */
 global $CONF;
 $CONF = [
     'filesep' => '/', //File separator
-    'dbtype' => 'pgsql', //Database settings
+    'dbtype' => $_SERVER['DB_BGS_DBTYPE'], //Database settings
     'dbpersist' => true,
     'debug' => false,
     'dbname' => $_SERVER['DB_BGS_DBNAME'],
@@ -15,4 +15,3 @@ $CONF = [
     'dbpasswd' => $_SERVER['DB_BGS_PWD'],
     'document_root' => '/var/www/bgs',
 ];
-

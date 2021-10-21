@@ -95,8 +95,6 @@ SQL;
         //keyword_key=C5D3
         $i0 = strpos($_REQUEST['kwk'], "D");
 
-//echo "<br>strpos(_REQUEST['kwk'],'D')=".strpos($_REQUEST['kwk'],"D")."<br>";
-
         $keyC = ($i0 > 1)
             ? explode(",", substr($_REQUEST['kwk'], 1, $i0 - 1))
             : [];
@@ -105,7 +103,6 @@ SQL;
             ? explode(",", substr($_REQUEST['kwk'], $i0 + 1))
             : [];
 
-//echo "<br>count(keyC)=".count($keyC)."<br>";
         $singledochit = 0; //=not tried yet or no category hit
         if (count($keyC) > 0) {
 
@@ -141,7 +138,6 @@ SQL;
 
         }//End at least one category id
 
-//echo "<br>count(keyD)=".count($keyD)."<br>";
         $docid_res = [[]];
         if (count($keyD) > 0) {
 

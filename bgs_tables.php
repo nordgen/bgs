@@ -6,29 +6,36 @@ if (isset($_REQUEST['m']) && $_REQUEST['m'] != "") {
     exit();
 }
 
-//First get number of rows - this is so we dont have to have $ADODB_COUNTRECS to true, for performance that affects UL data
-$nloci = $Zdb->queryScalar("SELECT count(*) FROM bgs_doc");
 
-
-$q = "SELECT d.id, d.stock_number_int AS bgsnum, d.locus_name AS locnam, d.locus_symbol AS locsym, d.chrom_location AS cromloc, d.bgn_page, d.bgn_volume FROM bgs_doc d ";
-$title = '';
-if ($mode == "bgs") {
-
-    $q .= "ORDER BY bgsnum ASC";
-    $title = "Listing of Barley Genetic Stock (BGS) descriptions.";
-
-} elseif ($mode == "loc") {
-
-    $q .= "ORDER BY symbol_ord ASC";
-    $title = "Alphabetic listing of Barley Genetic Stock (BGS) descriptions for loci.";
-}
 
 try {
+    if(!isset($Zdb) || !($Zdb instanceof \nordgen\DbBatch\DbBatch)) {
+        throw new Exception("No DB connection!");
+    }
+
+
+//First get number of rows - this is so we dont have to have $ADODB_COUNTRECS to true, for performance that affects UL data
+    $nloci = $Zdb->queryScalar("SELECT count(*) FROM bgs_doc");
+
+
+    $q = "SELECT d.id, d.stock_number_int AS bgsnum, d.locus_name AS locnam, d.locus_symbol AS locsym, d.chrom_location AS cromloc, d.bgn_page, d.bgn_volume FROM bgs_doc d ";
+    $title = '';
+    if ($mode == "bgs") {
+
+        $q .= "ORDER BY bgsnum ASC";
+        $title = "Listing of Barley Genetic Stock (BGS) descriptions.";
+
+    } elseif ($mode == "loc") {
+
+        $q .= "ORDER BY symbol_ord ASC";
+        $title = "Alphabetic listing of Barley Genetic Stock (BGS) descriptions for loci.";
+    }
+
     $rs = [];
     $rs = $Zdb->query($q)->getQueryResultSet();
     //echo "<br>".$q."<br>";
 } catch (exception $e) {
-    echo "Error selecting bgs data, \$q: " . $q . " - " . $e->getMessage();
+    echo isset($q) ? "Error selecting bgs data, \$q: " . $q . " - " : "" . $e->getMessage();
 }	
 
 $firstrow=true;
