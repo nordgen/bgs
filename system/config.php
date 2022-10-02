@@ -6,12 +6,12 @@
 global $CONF;
 $CONF = [
     'filesep' => '/', //File separator
-    'dbtype' => 'pgsql', //Database settings
+    'dbtype' => $_SERVER['DB_BGS_DBTYPE'], //Database settings
     'dbpersist' => true,
     'debug' => false,
-    'dbname' => 'bgs',
-    'dbhost' => $_SERVER["HEIMDAL_IP"], //Change settings below to Nordgen environment
-    'dbuser' => $_SERVER['DB_BGS_USR'] ?: 'postgres',
+    'dbname' => $_SERVER['DB_BGS_DBNAME'],
+    'dbhost' => $_SERVER["DB_BGS_DBHOST"],
+    'dbuser' => $_SERVER['DB_BGS_USR'],
     'dbpasswd' => $_SERVER['DB_BGS_PWD'],
     'document_root' => '/var/www/bgs',
 ];

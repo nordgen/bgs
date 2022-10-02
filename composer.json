@@ -28,8 +28,8 @@
   "require": {
     "php": "^8.0",
     "adodb/adodb-php": "^5.20",
-    "laminas/laminas-db": "^2.12",
-    "laminas/laminas-ldap": "^2.11",
+    "laminas/laminas-db": "^2.15",
+    "laminas/laminas-ldap": "^2.15",
     "pear/log": "^1.12",
     "ajant/simple-array-library": "^4.2",
     "nordgen/db-batch": "^2.0",

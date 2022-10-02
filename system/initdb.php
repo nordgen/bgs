@@ -1,11 +1,10 @@
 <?php
 global $Zdb, $CONF;
 
-//****** INIT DB ************
 try {
     /** @var \Laminas\Db\Adapter\Adapter */
     $zend_db = new \Laminas\Db\Adapter\Adapter([
-        'driver' => 'Pgsql', // $CONF['dbtype']
+        'driver' => $CONF['dbtype'],
         'hostname' => $CONF['dbhost'],
         'database' => $CONF['dbname'],
         'username' => $CONF['dbuser'],
@@ -15,5 +14,7 @@ try {
 } catch (exception $e) {
     if ($CONF['debug']) {
         echo "init: error connecting to db<br>error:" . $e->getMessage();
+//        var_dump($e);
+//        adodb_backtrace($e->gettrace());
     }
 }
