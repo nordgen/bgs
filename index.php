@@ -150,7 +150,7 @@ SELECT d.id AS docid, d.stock_number_char, d.locus_name, d.locus_symbol,  im.ima
 FROM bgs_doc d 
     LEFT JOIN bgs_image_mapping im ON (to_char(d.id,'FM999999999999')=im.foreign_key_value) 
 WHERE ((im.foreign_table='bgs_doc' AND im.foreign_key_name='id') OR im.imageid IS NULL) 
-  AND d.id IN {$implode(',', $keyD)}) 
+  AND d.id IN ({$implode(',', $keyD)}) 
 ORDER BY locus_name
 SQL;
 
