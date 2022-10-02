@@ -47,7 +47,7 @@ try {
     if (empty($ul)) {
         throw new Exception("no_ul");
     }
-    $rs = $Zdb->query($q)->getQueryResultSet();
+    $rs = $Zdb->query($q)->getQueryResult();
 } catch (exception $e) {
     echo "Error selecting ul: " . $e->getMessage();
 }

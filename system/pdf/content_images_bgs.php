@@ -35,7 +35,7 @@ try {
     //Get all data for this bgs
     $q = "select ds.name as section_title, sid.text, ds.id as section_id, sid.id as sidid from bgs_doc d join bgs_section_in_doc sid on (d.id=sid.docid) join bgs_docsection ds on (ds.id=sid.docsectionid) where d.stock_number_int=$1 order by sid.ord";
     $rs = [];
-    $rs = $Zdb->query($q,[$bgsnum])->getQueryResultSet();
+    $rs = $Zdb->query($q,[$bgsnum])->getQueryResult();
 
     $did = $bgsrow['id'];
     $q = "select i.filename, i.caption from bgs_doc d join bgs_image_mapping im on (im.foreign_key_value=to_char(d.id,'FM999999999999')) join bgs_image i on (im.imageid=i.id) where im.foreign_table='bgs_doc' and im.foreign_key_name='id' and d.id=$1 order by im.ord";
@@ -44,7 +44,7 @@ try {
     if (empty($did)) {
         throw new Exception("No document id is set.");
     }
-    $rs2 = $Zdb->query($q,[$did])->getQueryResultSet();
+    $rs2 = $Zdb->query($q,[$did])->getQueryResult();
 
 } catch (exception $e) {
     echo "Error selecting bgs data, \$q: " . $q . " - " . $e->getMessage();
@@ -207,7 +207,7 @@ try {
 
 
         <figure>
-            <img class=scaled src="/bgs/images/large/<?=$row2['filename']?>" alt="">
+            <img class=scaled src="/images/large/<?=$row2['filename']?>" alt="">
             <figcaption><h3><?=$row2["caption"]?></h3></figcaption>
         </figure>
 

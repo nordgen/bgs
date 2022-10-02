@@ -25,7 +25,7 @@ $ul = (isset($_REQUEST['ul']) && $_REQUEST['ul'] != "")
 
             try {
                 $rs = [];
-                $rs = $Zdb->query($q)->getQueryResultSet();
+                $rs = $Zdb->query($q)->getQueryResult();
                 //echo "<br>".$q."<br>";
             } catch (exception $e) {
                 echo "Error selecting ul: " . $e->getMessage();
@@ -79,7 +79,7 @@ if (isset($ul_columns) && count($ul_columns) > 0) {
                     //add value for new column, get all not used columns
                     $q = "SELECT c.name AS colname,c.id AS colid FROM bgs_ul_data_column c ORDER BY c.ord";
                     try {
-                        $rs = $Zdb->query($q)->getQueryResultSet();
+                        $rs = $Zdb->query($q)->getQueryResult();
                         //echo "<br>".$q."<br>";
                     } catch (exception $e) {
                         echo "Error selecting ul columnsfor not used list: " . $e->getMessage();

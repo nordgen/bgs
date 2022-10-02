@@ -75,7 +75,7 @@ SQL;
 
         try {
             $rs = [];
-            $rs = $Zdb->query($q)->getQueryResultSet();
+            $rs = $Zdb->query($q)->getQueryResult();
             //echo "<br>".$q."<br>";
         } catch (exception $e) {
             echo "Error selecting ul columns: " . $e->getMessage();
@@ -130,7 +130,7 @@ SQL;
             //echo "<br>C-query: ".$q."<br>";
 
             try {
-                $category_res = $Zdb->query($q)->getQueryResultSet();
+                $category_res = $Zdb->query($q)->getQueryResult();
                 //echo "<br>".$q."<br>";
             } catch (exception $e) {
                 echo "Error doing: " . $q . " - " . $e->getMessage();
@@ -158,7 +158,7 @@ SQL;
             //echo "<br>D-query: ".$q."<br>";
 
             try {
-                $docid_res = $Zdb->query($q)->getQueryResultSet();
+                $docid_res = $Zdb->query($q)->getQueryResult();
                 //echo "<br>".$q."<br>";
             } catch (exception $e) {
                 echo "Error doing: " . $q . " - " . $e->getMessage();

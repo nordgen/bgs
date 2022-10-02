@@ -46,7 +46,7 @@ else { //Value not empty, update or insert
     //Check if value exists->update, else insert
     $q = "SELECT id FROM bgs_ul_data WHERE row_id=" . $rowid . " AND column_id=" . $colid;
     try {
-        $rs = $Zdb->query($q)->getQueryResultSet();
+        $rs = $Zdb->query($q)->getQueryResult();
         //echo "<br>".$q."<br>";
     } catch (exception $e) {
         echo "Error checking record: " . $e->getMessage();

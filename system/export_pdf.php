@@ -11,6 +11,7 @@ require_once("./common.php");
 
 use Knp\Snappy\Pdf;
 
+
 function url_origin($s, $use_forwarded_host = false)
 {
     $ssl = (!empty($s['HTTPS']) && $s['HTTPS'] == 'on');
@@ -23,11 +24,7 @@ function url_origin($s, $use_forwarded_host = false)
     return $protocol . '://' . $host;
 }
 
-
-$myProjectDirectory = dirname(dirname(__FILE__));
-
-
-$snappy = new Pdf($myProjectDirectory . '/libraries/vendor/h4cc/wkhtmltopdf-amd64/bin/wkhtmltopdf-amd64');
+$snappy = new Pdf(realpath(\h4cc\WKHTMLToPDF\WKHTMLToPDF::PATH));
 
 $serverurl = url_origin($_SERVER);
 $url_dir = dirname($_SERVER['PHP_SELF']);

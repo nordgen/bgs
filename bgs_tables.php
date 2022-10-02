@@ -1,60 +1,66 @@
 <?php
 global $Zdb;
+
 if (isset($_REQUEST['m']) && $_REQUEST['m'] != "") {
     $mode = $_REQUEST['m'];
 } else {
     exit();
 }
 
-
-
 try {
-    if(!isset($Zdb) || !($Zdb instanceof \nordgen\DbBatch\DbBatch)) {
+    if(!isset($Zdb) || !(is_a($Zdb,'\nordgen\DbBatch\DbBatchInterface'))) {
         throw new Exception("No DB connection!");
     }
 
+    //First get number of rows - this is so we dont have to have $ADODB_COUNTRECS to true, for performance that affects UL data
+/*    $nloci = $Zdb->queryScalar(<<<SQL
+SELECT count(*) FROM bgs_doc
+SQL
+);*/
 
-//First get number of rows - this is so we dont have to have $ADODB_COUNTRECS to true, for performance that affects UL data
-    $nloci = $Zdb->queryScalar("SELECT count(*) FROM bgs_doc");
-
-
-    $q = "SELECT d.id, d.stock_number_int AS bgsnum, d.locus_name AS locnam, d.locus_symbol AS locsym, d.chrom_location AS cromloc, d.bgn_page, d.bgn_volume FROM bgs_doc d ";
+    $q = <<<SQL
+SELECT d.id, d.stock_number_int AS bgsnum, d.locus_name AS locnam, d.locus_symbol AS locsym, d.chrom_location AS cromloc, 
+       d.bgn_page, d.bgn_volume 
+FROM bgs_doc d 
+SQL;
     $title = '';
     if ($mode == "bgs") {
-
         $q .= "ORDER BY bgsnum ASC";
         $title = "Listing of Barley Genetic Stock (BGS) descriptions.";
-
     } elseif ($mode == "loc") {
 
         $q .= "ORDER BY symbol_ord ASC";
         $title = "Alphabetic listing of Barley Genetic Stock (BGS) descriptions for loci.";
     }
 
+    $nloci = $Zdb->query($q)->getQueryRecordCount();
+
     $rs = [];
-    $rs = $Zdb->query($q)->getQueryResultSet();
+    $rs = $Zdb->getQueryResult();
+    //$rs = $Zdb->query($q)->getQueryResult();
     //echo "<br>".$q."<br>";
 } catch (exception $e) {
-    echo isset($q) ? "Error selecting bgs data, \$q: " . $q . " - " : "" . $e->getMessage();
+    echo (isset($q) ? ("Error selecting bgs data, \$q: " . $q . " - ") : "") . $e->getMessage();
 }	
 
 $firstrow=true;
 $firstitem=true; //seperate flag for this, only applies to loggedin edit
 $n=0;
-foreach($rs as $row){ 
+foreach ($rs ?? [] as $row) {
 	$n++;
 	//First print header
-	if($firstrow){
+	if ($firstrow) {
 		$firstrow=false;
 		
-	if($mode=="loc" && hasAnyRole(array("bgs_edit","bgs_admin"))){ ?>
+	if ($mode=="loc" && hasAnyRole(array("bgs_edit","bgs_admin"))) { ?>
         <form style="display:inline;" name="rowmoveform" method="post" action="index.php"><input type="hidden"
                                                                                                  name="act"><input
                 type="hidden" name="docid"><input type="hidden" name="pg" value="bgs_tables"><input type="hidden"
                                                                                                     name="m"
                                                                                                     value="loc">
-<?php } //End add form tag ?>
-<div id="tablestitle"><?php echo $title; ?></div>
+    <?php } //End add form tag ?>
+
+<div id="tablestitle"><?php echo ($title ?? ''); ?></div>
         <table id="bgstab" class="minimize">
         <tr class="bgstabhead">
 <?php if($mode=="bgs"){ ?>
@@ -73,7 +79,7 @@ foreach($rs as $row){
 <?php }elseif($mode=="loc"){ ?>
 <td><?php echo $row['locsym']; ?></td><td><a href="index.php?pg=bgs_show&docid=<?php echo $row['id']; ?>" target="_self"><?php echo $row['bgsnum']; ?></a></td>
 <?php } ?>
-<td><?php echo $row['cromloc']; ?></td><td><?php echo $row['locnam']; ?></td><td><a href="http://wheat.pw.usda.gov/ggpages/bgn/<?php echo $row['bgn_volume']; ?>/index.html" target="_blank"><?php echo $row['bgn_volume']; ?>:<?php echo $row['bgn_page']; ?></a></td>
+<td><?php echo $row['cromloc']; ?></td><td><?php echo $row['locnam']; ?></td><td><a href="https://wheat.pw.usda.gov/ggpages/bgn/<?php echo $row['bgn_volume']; ?>/index.html" target="_blank"><?php echo $row['bgn_volume']; ?>:<?php echo $row['bgn_page']; ?></a></td>
 
 <?php if($mode=="loc" && hasAnyRole(array("bgs_edit","bgs_admin"))){ ?>
 <td>
@@ -82,7 +88,7 @@ foreach($rs as $row){
 }else{ ?>
 [<a href='javascript:locusUp(document.rowmoveform,<?php echo $row['id']; ?>)'>Up</a>]&nbsp;&nbsp;
 <?php } //End first locus or not
-if($n < $nloci){
+if($n < ($nloci ?? 0)){
 ?>
 [<a href='javascript:locusDown(document.rowmoveform,<?php echo $row['id']; ?>)'>Down</a>]
 <?php } //End last locus or not ?>

@@ -25,7 +25,7 @@ if (isset($_REQUEST['ul']) && $_REQUEST['ul'] != "") {
             $q = "select distinct u.value as ul, n.value as name from bgs_data u, bgs_data n where u.row_id=n.row_id and n.column_id=4 and u.column_id=3 order by ul";
 
             try {
-                $rs = $Zdb->query($q)->getQueryResultSet();
+                $rs = $Zdb->query($q)->getQueryResult();
                 //echo "<br>".$q."<br>";
             } catch (exception $e) {
                 echo "Error selecting ul: " . $e->getMessage();
@@ -52,7 +52,7 @@ if (isset($_REQUEST['ul']) && $_REQUEST['ul'] != "") {
             $q = "SELECT * FROM bgs_subgroups ORDER BY number";
 
             try {
-                $rs = $Zdb->query($q)->getQueryResultSet();
+                $rs = $Zdb->query($q)->getQueryResult();
                 //echo "<br>".$q."<br>";
             } catch (exception $e) {
                 echo "Error selecting subgroups: " . $e->getMessage();

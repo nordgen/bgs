@@ -30,21 +30,30 @@ if (isset($_REQUEST['docid']) && $_REQUEST['docid'] != "") {
 }
 
 //Get document name
-$q = "select name as docname from bgs_doc where id=" . $did;
+$q = "select name as docname from bgs_doc where id=$1";
 try {
-    $docname = $Zdb->queryScalar($q);
+    $docname = $Zdb->queryScalar($q,[$did]);
     //echo "<br>".$q."<br>";
 } catch (exception $e) {
     echo "Error selecting name, \$q: " . $q . " - " . $e->getMessage();
 }
 
 //Get document and image data for this bgs
-$q = "select d.stock_number_char, d.locus_name, d.locus_symbol, i.filename, i.caption, i.id as imgid, im.ord from bgs_doc d join bgs_image_mapping im on (im.foreign_key_value=to_char(d.id,'FM999999999999')) join bgs_image i on (im.imageid=i.id) where im.foreign_table='bgs_doc' and im.foreign_key_name='id' and d.id=" . $did . " order by im.ord";
+$q = <<<SQL
+select d.stock_number_char, d.locus_name, d.locus_symbol, i.filename, i.caption, i.id as imgid, im.ord 
+from bgs_doc d 
+    join bgs_image_mapping im on (im.foreign_key_value=to_char(d.id,'FM999999999999')) 
+    join bgs_image i on (im.imageid=i.id) 
+where im.foreign_table='bgs_doc' 
+  and im.foreign_key_name='id' 
+  and d.id=$1 
+order by im.ord
+SQL;
 
 try {
     $rs = [];
     $imgrows_html = '';
-    $rs = $Zdb->query($q)->getQueryResultSet();
+    $rs = $Zdb->query($q,[$did])->getQueryResult();
     //echo "<br>".$q."<br>";
 } catch (exception $e) {
     echo "Error selecting images, \$q: " . $q . " - " . $e->getMessage();
