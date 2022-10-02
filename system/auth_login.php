@@ -29,4 +29,3 @@ if($loggedin){
 	
 	$errors[] = array("auth_login","Login failed. Check username and password.");			
 }
-
