@@ -134,7 +134,7 @@ try {
         table.minimize {
             margin: 0;
             margin-top: 0.5em;
-            border-width: 1px;
+            border-width: 0 /*1px*/;
             border-collapse: collapse;
         }
 
@@ -176,7 +176,7 @@ try {
             font-style: italic;
             font-size: smaller;
             text-indent: 0;
-            border: thin silver solid;
+            /*border: 0 silver solid;*/
             margin: 0.5em;
             padding: 0.2em;
         }

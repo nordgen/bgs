@@ -21,8 +21,13 @@
   "prefer-stable": true,
   "repositories": [
     {
-      "type": "vcs",
-      "url": "git@github.com:nordgen/db-batch.git"
+      "type": "path",
+      "url": "../db-batch",
+      "options": {
+        "versions": {
+          "nordgen/db-batch": "3.0.1"
+        }
+      }
     }
   ],
   "require": {

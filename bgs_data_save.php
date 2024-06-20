@@ -41,7 +41,7 @@ if ($_POST['act'] == "saveSection") {
     echo "\n\n";
     */
 
-    $nt = str_replace("'", "''", $text);
+    //$nt = str_replace("'", "''", $text);
 
     //$q = "UPDATE bgs_section_in_doc SET text='" . trim($nt) . "' WHERE id=" . $sectid;
 
@@ -54,7 +54,7 @@ SET {$quotedText} = {$Zdb->formatParameterName('text')}
 WHERE {$quotedId} = {$Zdb->formatParameterName('Id')}
 SQL;
     try {
-        $rs = $Zdb->execute($q, [trim($nt), $sectid]);
+        $rs = $Zdb->execute($q, [trim($text), $sectid]);
     } catch (exception $e) {
         $error = "Error saving section data";
         //$error .= "\n query:".$q;

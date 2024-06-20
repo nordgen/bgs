@@ -75,22 +75,22 @@ foreach ($rs ?? [] as $row) {
 
 <tr>
 <?php if($mode=="bgs"){ ?>
-<td><a href="index.php?pg=bgs_show&docid=<?php echo $row['id']; ?>" target="_self"><?php echo $row['bgsnum']; ?></a></td><td><?php echo $row['locsym']; ?></td>
+<td><a class="button" href="index.php?pg=bgs_show&docid=<?php echo $row['id']; ?>" target="_self"><?php echo $row['bgsnum']; ?></a></td><td><?php echo $row['locsym']; ?></td>
 <?php }elseif($mode=="loc"){ ?>
-<td><?php echo $row['locsym']; ?></td><td><a href="index.php?pg=bgs_show&docid=<?php echo $row['id']; ?>" target="_self"><?php echo $row['bgsnum']; ?></a></td>
+<td><?php echo $row['locsym']; ?></td><td><a class="button" href="index.php?pg=bgs_show&docid=<?php echo $row['id']; ?>" target="_self"><?php echo $row['bgsnum']; ?></a></td>
 <?php } ?>
-<td><?php echo $row['cromloc']; ?></td><td><?php echo $row['locnam']; ?></td><td><a href="https://wheat.pw.usda.gov/ggpages/bgn/<?php echo $row['bgn_volume']; ?>/index.html" target="_blank"><?php echo $row['bgn_volume']; ?>:<?php echo $row['bgn_page']; ?></a></td>
+<td><?php echo $row['cromloc']; ?></td><td><?php echo $row['locnam']; ?></td><td><a class="button" href="https://wheat.pw.usda.gov/ggpages/bgn/<?php echo $row['bgn_volume']; ?>/index.html" target="_blank"><?php echo $row['bgn_volume']; ?>:<?php echo $row['bgn_page']; ?></a></td>
 
 <?php if($mode=="loc" && hasAnyRole(array("bgs_edit","bgs_admin"))){ ?>
 <td>
 <?php if($firstitem){
 	$firstitem=false;
 }else{ ?>
-[<a href='javascript:locusUp(document.rowmoveform,<?php echo $row['id']; ?>)'>Up</a>]&nbsp;&nbsp;
+<a class="button up" href='javascript:locusUp(document.rowmoveform,<?php echo $row['id']; ?>)'></a>&nbsp;&nbsp;
 <?php } //End first locus or not
 if($n < ($nloci ?? 0)){
 ?>
-[<a href='javascript:locusDown(document.rowmoveform,<?php echo $row['id']; ?>)'>Down</a>]
+<a class="button down" href='javascript:locusDown(document.rowmoveform,<?php echo $row['id']; ?>)'></a>
 <?php } //End last locus or not ?>
 </td>
 <?php } //End up & down buttons ?>

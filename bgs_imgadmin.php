@@ -101,24 +101,29 @@ HTML;
       enctype="multipart/form-data">
     <input type="hidden" name="act">
     <input type="hidden" name="imgid">
-    <h1 id="editimgh1">Edit images for <?php echo $docname; ?></h1>
-    <span class="link1">[<a href="index.php?pg=bgs_show&docid=<?php echo $did; ?>">Return to main page]</a></span>
-    <table class="edittab minimize">
-        <?= $imgrows_html ?>
-        <tr>
-            <td colspan="2">
-                <div class="head5"><label for="newimg">Upload new image</label></div>
-                <input id="newimg" name="newimg" type="file" size="25">
-                <br><br>
-                <label for="newimg_ord">Order:</label>&nbsp;<input type="text" name="newimg_ord" size="3"
-                                                                   id="newimg_ord">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input
-                        type="button" name="uplnewbut" value="Add new image" onClick="uploadNewImage(this.form)">
-            </td>
-            <td>
-                <textarea cols="70" rows="2" name="caption_new" id="caption_new"></textarea><br>
-                <label for="caption_new">Caption for new image</label>
-            </td>
-        </tr>
-    </table>
-    <input type="button" name="updord" value="Update image order" onclick="updateImageOrder(this.form)">
+    <div class="content-block">
+        <span class="minimized-to-right"><a class="button" href="index.php?pg=bgs_show&docid=<?php echo $did; ?>">Return to main page</a></span>
+        <h1 id="editimgh1">Edit images for <?php echo $docname; ?></h1>
+    </div>
+    <div class="content-block">
+        <table class="edittab">
+            <?= $imgrows_html ?>
+            <tr>
+                <td colspan="2">
+                    <div class="head5"><label for="newimg">Upload new image</label></div>
+                    <input id="newimg" name="newimg" type="file" size="25">
+                    <br><br>
+                    <label for="newimg_ord">Order:</label>&nbsp;<input type="text" name="newimg_ord" size="3"
+                                                                       id="newimg_ord">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input
+                            type="button" name="uplnewbut" value="Add new image" onClick="uploadNewImage(this.form)">
+                </td>
+                <td>
+                    <textarea cols="70" rows="2" name="caption_new" id="caption_new"></textarea><br>
+                    <label for="caption_new">Caption for new image</label>
+                </td>
+            </tr>
+        </table>
+        <input type="button" name="updord" value="Update image order" onclick="updateImageOrder(this.form)">
+    </div>
+
 </form>

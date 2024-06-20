@@ -237,7 +237,7 @@ function editSection(sectionid){
 		//alert("(this).attr(id)"+$(this).attr("id"));
 		if ($(this).attr("id") !== "sectbut_" + sectionid) {
 			var thissectid = $(this).attr("id").substr(8);
-			$(this).html("[<a href='javascript:editSection(" + thissectid + ")'>Edit</a>]");
+			$(this).html("<a class=\"button\" href='javascript:editSection(" + thissectid + ")'>Edit</a>");
 		}
 	});
 
@@ -257,7 +257,7 @@ function editSection(sectionid){
 	jqsect.html("<textarea class='edit_ta' rows='" + estimRows + "' name='sect_ta_" + sectionid + "' id='sect_ta_" + sectionid + "'>" + thetext + "</textarea>");
 
 	//Change edit button to save
-	jqspan.html("[<a href='javascript:saveSection(" + sectionid + ")'>Save</a>]&nbsp;&nbsp;[<a href='javascript:cancelEditSection(" + sectionid + ")'>Cancel</a>]");
+	jqspan.html("<a class='button' href='javascript:saveSection(" + sectionid + ")'>Save</a>&nbsp;&nbsp;<a class='button' href='javascript:cancelEditSection(" + sectionid + ")'>Cancel</a>");
 
 
 }
@@ -318,7 +318,7 @@ function saveSection(sectionid){
 	
 	jqsect.html(textToSave);
 
-	jqspan.html("<a href='javascript:editSection("+sectionid+")'>[Edit]</a>");
+	jqspan.html("<a class='button' href='javascript:editSection("+sectionid+")'>Edit</a>");
 }
 
 //Edit head
@@ -331,7 +331,7 @@ function editHead(field,docid){
 	$(".edit_head").each(function(index, element) {
 		if ($(this).attr("id") !== "edit_" + field) {
 			var thisfield = $(this).attr("id").substr(5);
-			$(this).html("[<a href='javascript:editHead(\"" + thisfield + "\"," + docid + ")'>Edit</a>]");
+			$(this).html("<a class='button update' href='javascript:editHead(\"" + thisfield + "\"," + docid + ")'>Edit</a>");
 		}
 	});
 	
@@ -341,7 +341,7 @@ function editHead(field,docid){
 	jqheadspan.addClass("headspan_edit");
 	jqheadspan.attr("contenteditable","true");
 	//Change edit button to save
-	jqlinkspann.html("[<a href='javascript:saveHead(\""+field+"\","+docid+")'>Save</a>]&nbsp;&nbsp;[<a href='javascript:cancelEditHead(\""+field+"\","+docid+")'>Cancel</a>]");
+	jqlinkspann.html("<a class='button' href='javascript:saveHead(\""+field+"\","+docid+")'>Save</a>&nbsp;&nbsp;<a class='button' href='javascript:cancelEditHead(\""+field+"\","+docid+")'>Cancel</a>");
 }
 
 function cancelEditHead(field,docid){
@@ -382,7 +382,7 @@ function saveHead(field, docid) {
 	});
 
 	$(".headspan").removeClass("headspan_edit");
-	jqlinkspann.html("[<a href='javascript:editHead(\""+field+"\","+docid+")'>Edit</a>]");
+	jqlinkspann.html("<a class='button update' href='javascript:editHead(\""+field+"\","+docid+")'>Edit</a>");
 }
 
 function updateChromLoc(form){
