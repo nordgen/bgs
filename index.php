@@ -75,7 +75,7 @@ SQL;
 
         try {
             $rs = [];
-            $rs = $Zdb->query($q)->getQueryResultSet();
+            $rs = $Zdb->query($q)->getQueryResult();
             //echo "<br>".$q."<br>";
         } catch (exception $e) {
             echo "Error selecting ul columns: " . $e->getMessage();
@@ -130,7 +130,7 @@ SQL;
             //echo "<br>C-query: ".$q."<br>";
 
             try {
-                $category_res = $Zdb->query($q)->getQueryResultSet();
+                $category_res = $Zdb->query($q)->getQueryResult();
                 //echo "<br>".$q."<br>";
             } catch (exception $e) {
                 echo "Error doing: " . $q . " - " . $e->getMessage();
@@ -158,7 +158,7 @@ SQL;
             //echo "<br>D-query: ".$q."<br>";
 
             try {
-                $docid_res = $Zdb->query($q)->getQueryResultSet();
+                $docid_res = $Zdb->query($q)->getQueryResult();
                 //echo "<br>".$q."<br>";
             } catch (exception $e) {
                 echo "Error doing: " . $q . " - " . $e->getMessage();
@@ -751,7 +751,13 @@ SQL;
             echo "Deleting image, error: No image identification";
             exit();
         }
-        $filename = $Zdb->queryScalar("SELECT filename FROM bgs_image WHERE id=" . $_REQUEST['imgid']);
+        if (!is_numeric($_REQUEST['imgid']) && is_int($_REQUEST['imgid'])) {
+            echo "Deleting image, error: Image identification not valid";
+            exit();
+        }
+        $params = ['id' => intval(trim($_REQUEST['imgid']))];
+        $sql = "SELECT filename FROM bgs_image WHERE id=" . $Zdb->formatParameterName('id');
+        $filename = $Zdb->queryScalar($sql, $params);
         $imgpath = $fs . "images";
         $filepath_l = $CONF['document_root'] . $imgpath . $fs . "large" . $fs . $filename;
         $filepath_s = $CONF['document_root'] . $imgpath . $fs . "small" . $fs . $filename;
@@ -760,8 +766,9 @@ SQL;
         unlink($filepath_s);
 
         try {
-            $sql = "DELETE FROM bgs_image WHERE id=" . $_REQUEST['imgid'];
-            $Zdb->execute($sql);
+            //$sql = "DELETE FROM bgs_image WHERE id=" . $_REQUEST['imgid'];
+            $sql = "DELETE FROM bgs_image WHERE id=" . $Zdb->formatParameterName('id');
+            $Zdb->execute($sql,$params);
             //echo $sql."<br >";
         } catch (exception $e) {
             echo "error deleting bgs_image<br>";
@@ -771,8 +778,10 @@ SQL;
         }
 
         try {
-            $sql = "DELETE FROM bgs_image_mapping WHERE imageid=" . $_REQUEST['imgid'];
-            $Zdb->execute($sql);
+            $params = ['imageid' => intval(trim($_REQUEST['imgid']))];
+            //$sql = "DELETE FROM bgs_image_mapping WHERE imageid=" . $_REQUEST['imgid'];
+            $sql = "DELETE FROM bgs_image_mapping WHERE imageid=" . $Zdb->formatParameterName('id');
+            $Zdb->execute($sql,$params);
             //echo $sql."<br >";
         } catch (exception $e) {
             echo "error deleting bgs_image<br>";

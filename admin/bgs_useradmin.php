@@ -9,7 +9,7 @@ $q = "SELECT id, name, description FROM bgs_role ORDER BY ord";
 
 try {
     $rs = [];
-    $rs = $Zdb->query($q)->getQueryResultSet();
+    $rs = $Zdb->query($q)->getQueryResult();
     //echo "<br>".$q."<br>";
 } catch (exception $e) {
     echo "Error selecting roles, \$q: " . $q . " - " . $e->getMessage();
@@ -50,7 +50,7 @@ $tabcols = count($roles) + 6;
 
         try {
             $rs = [];
-            $rs = $Zdb->query($q)->getQueryResultSet();
+            $rs = $Zdb->query($q)->getQueryResult();
             //echo "<br>".$q."<br>";
         } catch (exception $e) {
             echo "Error selecting users, \$q: " . $q . " - " . $e->getMessage();
@@ -60,11 +60,11 @@ $tabcols = count($roles) + 6;
             $uroles = array();
             //Get all roles for this user
             //Get all users with roles
-            $q2 = "SELECT ur.role_id AS roleid FROM bgs_user_role ur WHERE ur.user_id=" . $row['userid'];
+            $q2 = "SELECT ur.role_id AS roleid FROM bgs_user_role ur WHERE ur.user_id=$1";
 
             try {
                 $rs2 = [];
-                $rs2 = $Zdb->query($q2)->getQueryResultSet();
+                $rs2 = $Zdb->query($q2,[$row['userid']])->getQueryResult();
             } catch (exception $e) {
                 echo "Error selecting user-role mappings, \$q: " . $q . " - " . $e->getMessage();
             }

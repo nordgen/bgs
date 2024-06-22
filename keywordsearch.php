@@ -17,11 +17,11 @@ $userinp = strtolower($_GET['term']);
 if(!is_numeric($userinp) && (strlen($userinp) < 4 || strtolower(substr($userinp,0,3))!= "bgs")) { //Not 'bgs..' or starting on a number
 
 
-    $q = "SELECT keyword, category_id,bgsdoc_id FROM bgs_keyword_map WHERE lower(keyword) LIKE '" . $userinp . "%' ORDER BY keyword";
+    $q = "SELECT keyword, category_id,bgsdoc_id FROM bgs_keyword_map WHERE lower(keyword) LIKE $1 ORDER BY keyword";
 
     try {
         $rs = [];
-        $rs = $Zdb->query($q)->getQueryResultSet();
+        $rs = $Zdb->query($q,["$userinp%"])->getQueryResult();
         //echo "<br>".$q."<br>";
     } catch (exception $e) {
         echo "";
@@ -95,12 +95,12 @@ if(!is_numeric($userinp) && (strlen($userinp) < 4 || strtolower(substr($userinp,
         $numpart = trim(substr($userinp, 3));
     }
 
-    $q = "SELECT stock_number_int,stock_number_char, id as docid FROM bgs_doc WHERE stock_number_char LIKE 'BGS " . $numpart . "%' ORDER BY stock_number_int";
+    $q = "SELECT stock_number_int,stock_number_char, id as docid FROM bgs_doc WHERE stock_number_char LIKE $1 ORDER BY stock_number_int";
 
     //echo "<br>".$q."<br>";
 
     try {
-        $rs = $Zdb->query($q)->getQueryResultSet();
+        $rs = $Zdb->query($q,["BGS $numpart%"])->getQueryResult();
         //echo "<br>".$q."<br>";
     } catch (exception $e) {
         echo "";

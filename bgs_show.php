@@ -14,26 +14,46 @@ if (isset($_REQUEST['bgs']) && $_REQUEST['bgs'] != "") {
 }
 //Get all data for this bgs
 //First get number of rows - this is so we dont have to have $ADODB_COUNTRECS to true, for performance that affects UL data
-$nsects = !empty($did) ? $Zdb->queryScalar("SELECT count(*) FROM bgs_section_in_doc WHERE docid=" . $did) : null;
+$nsects = !empty($did) ? $Zdb->queryScalar("SELECT count(*) FROM bgs_section_in_doc WHERE docid=$1",[$did]) : null;
 
 
-$q = "select d.id, d.name AS docname, d.stock_number_int, d.locus_name, d.locus_symbol, d.chrom_location, ds.name AS section_title, sid.text, ds.id AS section_id, sid.id AS sidid, d.bgn_page, d.bgn_volume FROM bgs_doc d JOIN bgs_section_in_doc sid ON (d.id=sid.docid) JOIN bgs_docsection ds ON (ds.id=sid.docsectionid) ";
+$q = <<<SQL
+select d.id, d.name AS docname, d.stock_number_int, d.locus_name, d.locus_symbol, d.chrom_location, 
+       ds.name AS section_title, sid.text, ds.id AS section_id, sid.id AS sidid, d.bgn_page, d.bgn_volume 
+FROM bgs_doc d 
+    JOIN bgs_section_in_doc sid ON (d.id=sid.docid) 
+    JOIN bgs_docsection ds ON (ds.id=sid.docsectionid) 
 
+SQL;
+
+$params = [];
 if(isset($did) && $did!=""){
 	//We come in with docid
-	$q .= "WHERE d.id=".$did;
+	$q .= <<<SQL
+WHERE d.id=$1
+
+SQL;
+
+    $params[] = $did;
 }
 elseif(isset($bgsnum) && $bgsnum!=""){
 	//We come in with bgsnum
-	$q .= "WHERE d.stock_number_int=".$bgsnum;
+    $q .= <<<SQL
+WHERE d.stock_number_int=$1
+
+SQL;
+
+    $params[] = $bgsnum;
 }
 
-	
-$q .= "ORDER BY sid.ord ASC";
+$q .= <<<SQL
+ORDER BY sid.ord ASC
+SQL;
 
+$params = count($params)>0 ? $params : null;
 try {
     $rs = [];
-    $rs = $Zdb->query($q)->getQueryResultSet();
+    $rs = $Zdb->query($q,$params)->getQueryResult();
     //echo "<br>".$q."<br>";
 } catch (exception $e) {
     echo "Error selecting bgs data, \$q: " . $q . " - " . $e->getMessage();
@@ -60,28 +80,31 @@ foreach($rs as $row){
         $bgn = $bgn_volume . ":" . $bgn_page;
         ?>
         <h1 style="display:inline;"><?php echo $docname; ?></h1>
-        <form style="float:right;" action="#" name="exportpdf"><a
-                    href="http://wheat.pw.usda.gov/ggpages/bgn/<?php echo $bgn_volume; ?>/index.html" class="bgnlink"
-                    target="_blank">BGN&nbsp;&nbsp;<?php echo $bgn; ?></a><input type="button" value="Export to PDF"
-                                                                                 onClick="exportPdf(<?php echo $stocknumint; ?>)">
+        <form style="float:right;" action="#" name="exportpdf">
+            <a href="https://wheat.pw.usda.gov/ggpages/bgn/<?php echo $bgn_volume; ?>/index.html" class="button bgnlink" target="_blank">BGN&nbsp;&nbsp;<?php echo $bgn; ?></a>
+            <a onclick="exportPdf(<?php echo $stocknumint; ?>)" class="button export bgnlink">Export to PDF</a>
+
         </form>
         <div>Stock number:&nbsp;BGS&nbsp;<span class="headspan"
                                                id="head_stock_number_int"><?php echo $stocknumint; ?></span>
             <?php if (hasAnyRole(array("bgs_edit", "bgs_admin"))) { ?>
-                <span class="edit_head" id="edit_stock_number_int">[<a
-                            href='javascript:editHead("stock_number_int",<?php echo $did; ?>)'>Edit</a>]</span>
+                <span class="edit_head" id="edit_stock_number_int">
+                    <a class="button update" href='javascript:editHead("stock_number_int",<?php echo $did; ?>)'>Edit</a>
+                </span>
             <?php }  //End has editrights
             ?></div>
         <div>Locus name:&nbsp;<span class="headspan" id="head_locus_name"><?php echo $locusname; ?></span>
             <?php if (hasAnyRole(array("bgs_edit", "bgs_admin"))) { ?>
-                <span class="edit_head" id="edit_locus_name">[<a
-                            href='javascript:editHead("locus_name",<?php echo $did; ?>)'>Edit</a>]</span>
+                <span class="edit_head" id="edit_locus_name">
+                    <a class="button update" href='javascript:editHead("locus_name",<?php echo $did; ?>)'>Edit</a>
+                </span>
             <?php }  //End has editrights
             ?></div>
         <div>Locus symbol:&nbsp;<span class="headspan" id="head_locus_symbol"><?php echo $locussymb; ?></span>
             <?php if (hasAnyRole(array("bgs_edit", "bgs_admin"))) { ?>
-                <span class="edit_head" id="edit_locus_symbol">[<a
-                            href='javascript:editHead("locus_symbol",<?php echo $did; ?>)'>Edit</a>]</span>
+                <span class="edit_head" id="edit_locus_symbol">
+                    <a class="button update" href='javascript:editHead("locus_symbol",<?php echo $did; ?>)'>Edit</a>
+                </span>
             <?php }  //End has editrights
             ?></div>
     <?php } //end special for first row
@@ -90,8 +113,9 @@ foreach($rs as $row){
 
     <h2><?php echo $row['section_title']; ?></h2>
     <?php if (hasAnyRole(array("bgs_edit", "bgs_admin"))) { ?>
-        <span class="section_button" id="sectbut_<?php echo $row['sidid']; ?>">[<a
-                    href='javascript:editSection(<?php echo $row['sidid']; ?>)'>Edit</a>]</span>
+        <span class="section_button" id="sectbut_<?php echo $row['sidid']; ?>">
+            <a class="button update" href='javascript:editSection(<?php echo $row['sidid']; ?>)'>Edit</a>
+        </span>
         <form style="display:inline;" name="sectmoveform_<?php echo $row['sidid']; ?>" method="post" action="index.php">
             <input type="hidden" name="act"><input type="hidden" name="sidid"
                                                    value="<?php echo $row['sidid']; ?>"><input type="hidden"
@@ -102,11 +126,11 @@ foreach($rs as $row){
 <?php if ($firstsect) {
     $firstsect = false;
 } else { ?>
-    [<a href='javascript:sectionUp(document.sectmoveform_<?php echo $row['sidid']; ?>)'>Up</a>]&nbsp;&nbsp;
+    <a class="button up" href='javascript:sectionUp(document.sectmoveform_<?php echo $row['sidid']; ?>)'>Up</a>&nbsp;&nbsp;
 <?php } //End first section or not
 if ($n < $nsects) {
     ?>
-    [<a href='javascript:sectionDown(document.sectmoveform_<?php echo $row['sidid']; ?>)'>Down</a>]
+    <a class="button down" href='javascript:sectionDown(document.sectmoveform_<?php echo $row['sidid']; ?>)'>Down</a>
 <?php } //End last section or not ?>
 </span></form>
     <?php } //End has editrights
@@ -119,11 +143,20 @@ if ($n < $nsects) {
 <?php if($row['section_id']==3) { //Description, add images here
 
         //Get all image data for this bgs
-        $q = "select i.filename, i.caption from bgs_doc d join bgs_image_mapping im on (im.foreign_key_value=to_char(d.id,'FM999999999999')) join bgs_image i on (im.imageid=i.id) where im.foreign_table='bgs_doc' and im.foreign_key_name='id' and d.id=" . $did . " order by im.ord asc";
+        $q = <<<SQL
+select i.filename, i.caption 
+from bgs_doc d 
+    join bgs_image_mapping im on (im.foreign_key_value=to_char(d.id,'FM999999999999')) 
+    join bgs_image i on (im.imageid=i.id) 
+where im.foreign_table='bgs_doc' 
+  and im.foreign_key_name='id' 
+  and d.id=$1 
+order by im.ord asc
+SQL;
 
         try {
             $rs2 = [];
-            $rs2 = $Zdb->query($q)->getQueryResultSet();
+            $rs2 = $Zdb->query($q,[$did])->getQueryResult();
             //echo "<br>".$q."<br>";
         } catch (exception $e) {
             echo "Error selecting getting images, \$q: " . $q . " - " . $e->getMessage();
@@ -133,8 +166,8 @@ if ($n < $nsects) {
             if ($noimg == true) { //First image, add edit link
                 $noimg = false;
                 if (hasAnyRole(array("bgs_edit", "bgs_admin"))) { ?>
-                    <div class="edtimgdiv">[<a href='index.php?pg=bgs_imgadmin&docid=<?php echo $did; ?>'>Edit
-                            images</a>]
+                    <div class="edtimgdiv">
+                        <a class="button update" href='index.php?pg=bgs_imgadmin&docid=<?php echo $did; ?>'>Edit images</a>
                     </div>
                 <?php } //End has editrights
             }
@@ -148,7 +181,8 @@ if ($n < $nsects) {
         <?php } //end foreach
         if ($noimg) {
             if (hasAnyRole(array("bgs_edit", "bgs_admin"))) { ?>
-                <div class="edtimgdiv">[<a href='index.php?pg=bgs_imgadmin&docid=<?php echo $did; ?>'>Add images</a>]
+                <div class="edtimgdiv">
+                    <a class="button add" href='index.php?pg=bgs_imgadmin&docid=<?php echo $did; ?>'>Add images</a>
                 </div>
             <?php } //End has editrights
             echo "No images"; ?>
@@ -160,10 +194,10 @@ if ($n < $nsects) {
 	
 	if($n==0) { //We have added a new BGS document or removed all sections display the header that is missing because there were no sections
 
-        $q = "select d.name AS docname, d.stock_number_int, d.locus_name, d.locus_symbol FROM bgs_doc d WHERE d.id=" . $did;
+        $q = "select d.name AS docname, d.stock_number_int, d.locus_name, d.locus_symbol FROM bgs_doc d WHERE d.id=$1";
         try {
             $rs = [];
-            $rs = $Zdb->query($q)->getQueryResultSet();
+            $rs = $Zdb->query($q,[$did])->getQueryResult();
             //echo "<br>".$q."<br>";
         } catch (exception $e) {
             echo "Error selecting bgs header data, \$q: " . $q . " - " . $e->getMessage();
@@ -178,16 +212,19 @@ if ($n < $nsects) {
         <h1 style="display:inline;"><?php echo $docname; ?></h1>
         <div>Stock number:&nbsp;BGS&nbsp;<span class="headspan"
                                                id="head_stock_number_int"><?php echo $stocknumint; ?></span>
-            <span class="edit_head" id="edit_stock_number_int">[<a
-                        href='javascript:editHead("stock_number_int",<?php echo $did; ?>)'>Edit</a>]</span>
+            <span class="edit_head" id="edit_stock_number_int">
+                <a class="button" href='javascript:editHead("stock_number_int",<?php echo $did; ?>)'>Edit</a>
+            </span>
         </div>
         <div>Locus name:&nbsp;<span class="headspan" id="head_locus_name"><?php echo $locusname; ?></span>
-            <span class="edit_head" id="edit_locus_name">[<a
-                        href='javascript:editHead("locus_name",<?php echo $did; ?>)'>Edit</a>]</span>
+            <span class="edit_head" id="edit_locus_name">
+                <a class="button" href='javascript:editHead("locus_name",<?php echo $did; ?>)'>Edit</a>
+            </span>
         </div>
         <div>Locus symbol:&nbsp;<span class="headspan" id="head_locus_symbol"><?php echo $locussymb; ?></span>
-            <span class="edit_head" id="edit_locus_symbol">[<a
-                        href='javascript:editHead("locus_symbol",<?php echo $did; ?>)'>Edit</a>]</span>
+            <span class="edit_head" id="edit_locus_symbol">
+                <a class="button" href='javascript:editHead("locus_symbol",<?php echo $did; ?>)'>Edit</a>
+            </span>
         </div>
     <?php } //End display header, no sections
 
@@ -198,7 +235,7 @@ if ($n < $nsects) {
     $q = "SELECT ds.name AS section_title, ds.id AS section_id FROM bgs_docsection ds ORDER BY ds.id";
     try {
         $rs2 = [];
-        $rs2 = $Zdb->query($q)->getQueryResultSet();
+        $rs2 = $Zdb->query($q)->getQueryResult();
         //echo "<br>".$q."<br>";
     } catch (exception $e) {
         echo "Error selecting sections to add, \$q: " . $q . " - " . $e->getMessage();
@@ -270,8 +307,8 @@ if ($n < $nsects) {
                 </tr>
             </table>
         </div>
-        <div id="deldocdiv">[<a
-                    href='javascript:delDoc(document.sectioneditform,"<?php echo $docname; ?>")'>Delete <?php echo $docname; ?></a>]
+        <div id="deldocdiv">
+            <a class="button remove" style="color:red" href='javascript:delDoc(document.sectioneditform,"<?php echo $docname; ?>")'>Delete <?php echo $docname; ?></a>
         </div>
     </form>
 <?php } //End has editrights  ?>

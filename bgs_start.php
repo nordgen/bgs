@@ -49,3 +49,7 @@ the normal cultivar.</p>
   are looking for. (Many of the germplasm accessions are hyperlinked to
   Web pages of the holding gene banks in order to facilitate easy
   ordering of material.)</p>
+<br>
+<h4>How to cite:</h4>
+<p>Hansson, M., Youssef, H.M., Zakhrabekova, S. et al. A guide to barley mutants. Hereditas <b>161</b>, 11 (2024). <a href="https://doi.org/10.1186/s41065-023-00304-w">https://doi.org/10.1186/s41065-023-00304-w</a>
+</p>

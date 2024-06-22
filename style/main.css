@@ -10,16 +10,37 @@ body {
 #topdiv {
 	font-family: Arial, Helvetica, sans-serif;
 	background-color: #CCC;
-	height:95px;
+	display: flex;
+	align-content: stretch;
+	flex-wrap: nowrap;
+	flex-direction: row;
+	justify-content: space-evenly;
+	align-items: stretch;
+
 }
+
+#topleftdiv {
+	display: inline-flex;
+	flex-wrap: wrap;
+	align-content: flex-start;
+	width: -webkit-fill-available;
+}
+
 #logindiv {
 	/* background-color: #99F; */
-	position: relative;
+	/*position: relative;*/
 	float: right;
 	margin-right: 20px;
 	margin-top: 10px;
 	background-color: #CCC;
-	font-size: 12px
+	font-size: 12px;
+	display: inline-flex;
+	width: min-content;
+	align-items: flex-end;
+	align-content: flex-start;
+	justify-content: flex-start;
+	flex-direction: row-reverse;
+	flex-wrap: wrap;
 }
 #logindiv input {
 	font-size: 12px;
@@ -29,18 +50,46 @@ body {
 
 #navdiv {
 	/* background-color: #3C9; */
-	position: relative;
-	float: left;
+	/*position: relative;*/
+	/*float: left;*/
 	margin-left: 30px;
 	margin-top: 10px;
-	width: 60%;
-	text-align: center;
+	/*width: 60%;*/
+	/*text-align: center;*/
 	background-color: #CCC;
+	display: inline-flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-content: flex-start;
+	justify-content: flex-start;
+	align-items: flex-start;
+	width: -webkit-fill-available;
 }
 
 #topnav {
-	text-align: center;
-	padding-bottom: 10px;
+	text-align: left;
+	/*padding-bottom: 10px;*/
+	width: fit-content;
+}
+
+#navdiv > form {
+	display: inline-flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	justify-content: flex-start;
+	align-items: baseline;
+	width: -webkit-fill-available;
+	padding-bottom: 0.25em;
+}
+
+#navdiv > form > input#keywordsearch {
+	width: 100%;
+	margin-top: 5px;
+	/*width: -webkit-fill-available;*/
+}
+
+#navdiv > form > label#searchlabel {
+	font-size: 12px;
 }
 
 
@@ -144,7 +193,7 @@ body {
 }
 .section_button {
 	font-family: Arial, Helvetica, sans-serif;
-	font-size: 18px;
+	/*font-size: 18px;*/
 	font-weight: normal;
 	text-align: left;
 }
@@ -182,7 +231,7 @@ body {
 	text-align: left;
 	vertical-align: bottom;
 	padding: 6px;
-	border: 1px solid #000;
+	/*border: 1px solid #000;*/
 }
 
 #editimgh1 {
@@ -388,4 +437,95 @@ table.no-cell-padding td, table.minimize td {
 
 table.minimize.pad8 td {
 	padding: 8px;
+}
+
+.button {
+	display: inline;
+	width: 115px;
+	height: 25px;
+	background-color: ButtonFace;
+	padding: 10px;
+	text-align: center;
+	border-radius: 5px;
+	color: ButtonText;
+	font-weight: normal;
+	line-height: 25px;
+
+	align-items: flex-start;
+	cursor: default;
+	box-sizing: border-box;
+	white-space: pre;
+	padding-block: 1px;
+	padding-inline: 6px;
+	border-width: 1px;
+	border-style: outset;
+	border-color: ButtonBorder;
+	border-image: initial;
+	text-decoration:none;
+}
+/*
+.button a:link {
+	text-decoration: none;
+}
+
+.button a:visited {
+	text-decoration: none;
+}
+*/
+a:hover.button {
+	/*text-decoration: none;*/
+	background-color: rgb(221, 221, 221) ;
+}
+/*
+.button a:active {
+	text-decoration: none;
+}
+*/
+
+.button.update:before {
+	content: "✎"
+}
+
+.button.remove:before {
+	content: "🗑";
+	color: #cd0a0a;
+}
+
+.button.up:before {
+	content: "⮝";
+}
+
+.button.down:before {
+	content: "⮟";
+}
+
+.button.export:before {
+	content: "🢭⇨";
+}
+
+.button.import:before {
+	content: "⇨🢭";
+}
+
+
+
+.minimized-to-right {
+	margin: 0;
+	float: right;
+}
+
+div.content-block {
+	width: fit-content;
+	width: -webkit-fill-available;
+	display: block;
+	float: inline-start;
+}
+
+
+textarea {
+	width: -webkit-fill-available;
+}
+
+button {
+	padding: 0;
 }

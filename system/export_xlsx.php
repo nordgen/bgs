@@ -79,16 +79,16 @@ select distinct c.name as colname, c.id as colid, c.ord, d.value, d.row_id
 from bgs_ul_data d, bgs_ul_data u, bgs_ul_data_column c 
 WHERE d.row_id=u.row_id 
   AND u.column_id=3 
-  AND u.value='$ul' 
+  AND u.value=$1 
   AND c.id=d.column_id 
-  AND d.column_id IN({$implode(',', $colidarr)}) 
+  AND d.column_id IN ({$implode(',', $colidarr)}) 
 order by d.row_id, c.ord
 SQL;
 
     //echo "<br>".$q."<br>";
     try {
         $rs = [];
-        $rs = $Zdb->query($q)->getQueryResultSet();
+        $rs = $Zdb->query($q,[$ul])->getQueryResult();
         //echo "<br>".$q."<br>";
     } catch (exception $e) {
         echo "Error selecting ul: " . $e->getMessage();
@@ -101,7 +101,7 @@ SQL;
         ->setTitle($doctitle)
         ->setSubject($doctitle)
         ->setDescription("Data export from " . $doctitle)
-        ->setKeywords("BGSp " . $doctitle)
+        ->setKeywords("BGS " . $doctitle)
         ->setCategory("BGS export");
     // Add some data
     $sheet = $spreadsheet->setActiveSheetIndex(0);
@@ -171,6 +171,33 @@ SQL;
 	
 	
 	} //End we have data
+
+
+    foreach ($sheet->getRowIterator() as $rowIndex => $row) {
+        $lastCol = 'A';
+        foreach ($row->getCellIterator() as $collIndex => $cell) {
+
+            if ($rowIndex === 1) {
+                $cell->getStyle()->getFill()
+                    ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+                    ->getStartColor()->setARGB("FF385988");
+                $cell->getStyle()->getFont()
+                    ->setBold(true)
+                    ->getColor()->setARGB(\PhpOffice\PhpSpreadsheet\Style\Color::COLOR_WHITE);
+
+            } elseif ($rowIndex % 2 === 1) {
+                $cell->getStyle()->getFill()
+                    ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+                    ->getStartColor()->setARGB("FFd4e9f9");
+            }
+            $lastCol = $collIndex;
+        }
+        if ($rowIndex === 1) {
+            $sheet->setAutoFilter("A1:{$lastCol}1");
+        }
+
+    }
+
 
 } //End export_type == "ul"
 

@@ -1,0 +1,59 @@
+{
+  "name": "nordgen/bgs",
+  "description": "Composer lazy loading libraies",
+  "license": [
+    "LGPL-2.1-only",
+    "GPL-3.0-or-later"
+  ],
+  "authors": [
+    {
+      "name": "Jonas Nordling",
+      "email": "jonas.nordling@komut.se",
+      "role": "Project initiator, Developer"
+    },
+    {
+      "name": "Kjell-Åke Lundblad",
+      "email": "kjellake.lundblad@nordgen.org",
+      "role": "Developer"
+    }
+  ],
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "repositories": [
+    {
+      "type": "path",
+      "url": "../db-batch",
+      "options": {
+        "versions": {
+          "nordgen/db-batch": "3.0.1"
+        }
+      }
+    }
+  ],
+  "require": {
+    "php": "^8.0",
+    "adodb/adodb-php": "^5.20",
+    "laminas/laminas-db": "^2.15",
+    "laminas/laminas-ldap": "^2.15",
+    "pear/log": "^1.12",
+    "ajant/simple-array-library": "^4.2",
+    "nordgen/db-batch": "^2.0",
+    "monolog/monolog": "2.3",
+    "phpoffice/phpspreadsheet": "^1.14",
+    "h4cc/wkhtmltopdf-amd64": "0.12.1",
+    "h4cc/wkhtmltoimage-amd64": "0.12.1",
+    "knplabs/knp-snappy": "1.2.1"
+  },
+  "require-dev": {
+    "codeception/codeception": "^4.1",
+    "codeception/specify": "^1.4",
+    "codeception/verify": "^1.5",
+    "codeception/c3": "^2.6",
+    "psy/psysh": "^0.7"
+  },
+  "autoload": {
+    "psr-4": {
+      "nordgen\\Bgs\\": "src/"
+    }
+  }
+}

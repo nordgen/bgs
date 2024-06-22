@@ -10,7 +10,8 @@ try {
         'username' => $CONF['dbuser'],
         'password' => $CONF['dbpasswd'],
     ]);
-    $Zdb = new nordgen\DbBatch\DbBatch($zend_db);
+    $Zdb = nordgen\DbBatch\DbBatch::create($zend_db);
+
 } catch (exception $e) {
     if ($CONF['debug']) {
         echo "init: error connecting to db<br>error:" . $e->getMessage();

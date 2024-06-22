@@ -26,29 +26,34 @@
     }
   ],
   "require": {
-    "php": "^8.0",
-    "adodb/adodb-php": "^5.20",
-    "laminas/laminas-db": "^2.15",
-    "laminas/laminas-ldap": "^2.15",
-    "pear/log": "^1.12",
+    "php": "^8.1",
+    "nordgen/db-batch": "^3.0",
+    "adodb/adodb-php": "^5.22",
+    "laminas/laminas-db": "^2.20",
     "ajant/simple-array-library": "^4.2",
-    "nordgen/db-batch": "^2.0",
-    "monolog/monolog": "2.3",
+    "monolog/monolog": "^3.6",
     "phpoffice/phpspreadsheet": "^1.14",
-    "h4cc/wkhtmltopdf-amd64": "0.12.1",
-    "h4cc/wkhtmltoimage-amd64": "0.12.1",
-    "knplabs/knp-snappy": "1.2.1"
+    "h4cc/wkhtmltopdf-amd64": "0.12.4",
+    "h4cc/wkhtmltoimage-amd64": "0.12.4",
+    "knplabs/knp-snappy": "^1.5"
   },
   "require-dev": {
-    "codeception/codeception": "^4.1",
-    "codeception/specify": "^1.4",
-    "codeception/verify": "^1.5",
-    "codeception/c3": "^2.6",
-    "psy/psysh": "^0.7"
+    "codeception/codeception": "^5.1",
+    "codeception/module-phpbrowser": "^3.0",
+    "codeception/module-asserts": "^3.0",
+    "codeception/module-db": "^3.1",
+    "psy/psysh": "^0.12"
   },
   "autoload": {
     "psr-4": {
       "nordgen\\Bgs\\": "src/"
     }
+  },
+  "scripts": {
+    "enable-wkhtml": [
+      "chmod g+x vendor/h4cc/wkhtmltopdf-amd64/bin/wkhtmltopdf-amd64",
+      "chmod g+x vendor/h4cc/wkhtmltoimage-amd64/bin/wkhtmltoimage-amd64"
+    ],
+    "post-update-cmd": "@enable-wkhtml"
   }
 }
