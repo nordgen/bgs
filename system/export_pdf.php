@@ -26,7 +26,7 @@ function url_origin($s, $use_forwarded_host = false)
 
 $snappy = new Pdf(realpath(\h4cc\WKHTMLToPDF\WKHTMLToPDF::PATH));
 
-$serverurl = url_origin($_SERVER);
+$serverurl = 'http://bgs.local'; /*url_origin($_SERVER)*/
 $url_dir = dirname($_SERVER['PHP_SELF']);
 $bgs = $_REQUEST['bgs'];
 $input_url = $serverurl . $url_dir . '/pdf/content_bgs.php?bgs=' . $bgs;
