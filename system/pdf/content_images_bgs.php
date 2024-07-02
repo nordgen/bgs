@@ -46,6 +46,9 @@ try {
     }
     $rs2 = $Zdb->query($q,[$did])->getQueryResult();
 
+    $webroot = realpath(__DIR__ . '/../..');
+
+
 } catch (exception $e) {
     echo "Error selecting bgs data, \$q: " . $q . " - " . $e->getMessage();
     exit();
@@ -203,11 +206,14 @@ try {
         <h2>Images:</h2>
 <?php
     foreach ($rs2 as $row2) {
+        $filename = "/images/large/{$row2['filename']}";
+        $src = file_exists(realpath($webroot.$filename)) ? "src=\"$filename\"" : "";
+        if (empty($src)) continue;
         ?>
 
 
         <figure>
-            <img class=scaled src="/images/large/<?=$row2['filename']?>" alt="">
+            <img class=scaled <?=$src?> alt="">
             <figcaption><h3><?=$row2["caption"]?></h3></figcaption>
         </figure>
 

@@ -1,5 +1,5 @@
 <?php
-global $Zdb;
+global $Zdb, $CONF;
 $did = '';
 if (isset($_REQUEST['bgs']) && $_REQUEST['bgs'] != "") {
     $bgsnum = $_REQUEST['bgs'];
@@ -14,7 +14,7 @@ if (isset($_REQUEST['bgs']) && $_REQUEST['bgs'] != "") {
 }
 //Get all data for this bgs
 //First get number of rows - this is so we dont have to have $ADODB_COUNTRECS to true, for performance that affects UL data
-$nsects = !empty($did) ? $Zdb->queryScalar("SELECT count(*) FROM bgs_section_in_doc WHERE docid=$1",[$did]) : null;
+//$nsects = !empty($did) ? $Zdb->queryScalar("SELECT count(*) FROM bgs_section_in_doc WHERE docid=$1",[$did]) : null;
 
 
 $q = <<<SQL
@@ -43,7 +43,15 @@ WHERE d.stock_number_int=$1
 
 SQL;
 
-    $params[] = $bgsnum;
+}
+elseif(isset($loc) && $loc!=""){
+    //We come in with $loc
+    $q .= <<<SQL
+WHERE d.locus_symbol=$1
+
+SQL;
+
+    $params[] = $loc;
 }
 
 $q .= <<<SQL
@@ -52,6 +60,7 @@ SQL;
 
 $params = count($params)>0 ? $params : null;
 try {
+    $nsects = $Zdb->query($q,$params)->getQueryRecordCount();
     $rs = [];
     $rs = $Zdb->query($q,$params)->getQueryResult();
     //echo "<br>".$q."<br>";
@@ -61,9 +70,9 @@ try {
 $firstrow=true;
 $firstsect=true;
 $oursectids = array(); //Used to filter out sections we don't have and might want to add at the bottom
-//$nsects = $rs->RecordCount();
+//$nsects = $nsects ?: $rs->RecordCount();
 $n=0;
-foreach($rs as $row){ 
+foreach ($rs as $row) {
 	$n++;
 	//First print header
 	if($firstrow) {
@@ -117,11 +126,10 @@ foreach($rs as $row){
             <a class="button update" href='javascript:editSection(<?php echo $row['sidid']; ?>)'>Edit</a>
         </span>
         <form style="display:inline;" name="sectmoveform_<?php echo $row['sidid']; ?>" method="post" action="index.php">
-            <input type="hidden" name="act"><input type="hidden" name="sidid"
-                                                   value="<?php echo $row['sidid']; ?>"><input type="hidden"
-                                                                                               name="docid"
-                                                                                               value="<?php echo $did; ?>"><input
-                    type="hidden" name="pg" value="bgs_show">
+            <input type="hidden" name="act">
+            <input type="hidden" name="sidid" value="<?php echo $row['sidid']; ?>">
+            <input type="hidden" name="docid" value="<?php echo $did; ?>">
+            <input type="hidden" name="pg" value="bgs_show">
             <span class="section_move">
 <?php if ($firstsect) {
     $firstsect = false;
@@ -138,7 +146,20 @@ if ($n < $nsects) {
 
     <div class="sectiondiv" id="section_<?php echo $row['sidid']; ?>">
         <?php
-        echo str_replace("\n", "<br>", htmlentities($row['text']));
+        if ($row['section_id']!=7) {
+            echo str_replace("\n", "<br>", htmlentities($row['text']));
+        } else {
+//            <dl class="nl" style="margin-top: 0">
+//            $re = '/^\s*(\d+)\.(.*)$/sD';
+//            foreach (explode("\n", htmlentities($row['text'])) as $referenceRow) {
+//                preg_match($re, $referenceRow, $matches);
+//                echo '<dt>' . $matches[1] . '</dt>';
+//                echo '<dd>' . $matches[2] . '</dd>';
+//            }
+//            </dl>
+            echo str_replace("\n", "<br>", htmlentities($row['text']));
+        }
+
 ?></div>
 <?php if($row['section_id']==3) { //Description, add images here
 
@@ -188,6 +209,45 @@ SQL;
             echo "No images"; ?>
         <?php } //end no img
     } //End section==3
+    elseif ($CONF['reference_ngb_numbers'] && $row['section_id']==7) {
+        $q = <<<SQL
+select uld_ngb.value as ngb_number /*, uld_bgs.value as bgs_number*/
+from bgs_ul_data AS uld_bgs
+left join bgs_ul_data AS uld_ngb on uld_ngb.row_id=uld_bgs.row_id and uld_ngb.column_id=5
+where uld_bgs.column_id = 11
+   and  substring(trim(replace(uld_bgs.value,'BGS','')) from '[^ ]+'::text) = $1
+GROUP BY uld_ngb.value;
+SQL;
+
+        try {
+            $rs2 = [];
+            $rs2 = $Zdb->query($q,[$stocknumint])->getQueryResult();
+            //echo "<br>".$q."<br>";
+        } catch (exception $e) {
+            echo "Error selecting getting images, \$q: " . $q . " - " . $e->getMessage();
+        }
+        if (count($rs2)>0) {
+        ?>
+
+            <h2>NGB number url references to <?php echo $_SERVER['INFO_SYS_TITLE']; ?>:</h2>
+            <div class="sectiondiv" id="section_<?php echo $row['sidid']; ?>-1">
+                <ol style="margin-top: 0">
+<?php
+        }
+        $serverPage = $_SERVER['INFO_SYS_URL'] . '/' . $_SERVER['INFO_SYS_ACCESSION_PAGE'];
+        foreach ($rs2 as $row2) {
+            $accessionNumber = 'NGB ' . $row2['ngb_number'];;
+            $accessionUrl = $serverPage . $accessionNumber;
+            ?>
+                <li><a href="<?php echo $accessionUrl; ?>" target="_blank"><?php echo $accessionNumber; ?></a> (<?php echo $accessionUrl; ?>)</li>
+        <?php } //end foreach
+        if (count($rs2)>0) {
+        ?>
+                </ol>
+            </div>
+                    <?php
+        }
+    }
 } //End loop through all sections ?>
 
 <?php if(hasAllRoles(array("user_admin"))) {
