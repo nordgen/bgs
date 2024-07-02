@@ -1,5 +1,6 @@
 <?php
 // Include the main TCPDF library (search for installation path).
+
 error_reporting(E_ALL);
 ini_set('display_errors', TRUE);
 ini_set('display_startup_errors', TRUE);
@@ -9,7 +10,7 @@ require_once("./../initdb.php");
 require_once("./../common.php");
 
 
-global $Zdb, $doctitle;
+global $Zdb, $doctitle, $CONF;
 
 
 //****************** Create the html more or less like bgs_show
@@ -51,6 +52,65 @@ try {
     exit();
 }
 
+
+function createInformationSystemAccessionReferences(int $stock_number_int)
+{
+    global $Zdb;
+    $q = <<<SQL
+select uld_ngb.value as ngb_number /*, uld_bgs.value as bgs_number*/
+from bgs_ul_data AS uld_bgs
+left join bgs_ul_data AS uld_ngb on uld_ngb.row_id=uld_bgs.row_id and uld_ngb.column_id=5
+where uld_bgs.column_id = 11
+   and  substring(trim(replace(uld_bgs.value,'BGS','')) from '[^ ]+'::text) = $1
+GROUP BY uld_ngb.value;
+SQL;
+
+    try {
+        $rs2 = [];
+        $rs2 = $Zdb->query($q,[$stock_number_int])->getQueryResult();
+        //echo "<br>".$q."<br>";
+    } catch (exception $e) {
+        echo "Error selecting getting images, \$q: " . $q . " - " . $e->getMessage();
+    }
+    if (count($rs2)>0) {
+        ?>
+        <h2>NGB number url references to <?php echo $_SERVER['INFO_SYS_TITLE']; ?>:</h2>
+        <div class="sectiondiv" >
+            <ol>
+        <?php
+    }
+    $serverPage = $_SERVER['INFO_SYS_URL'] . '/' . $_SERVER['INFO_SYS_ACCESSION_PAGE'];
+    foreach ($rs2 as $row2) {
+        $accessionNumber = 'NGB ' . $row2['ngb_number'];;
+        $accessionUrl = $serverPage . $accessionNumber;
+        ?>
+                <li><a href="<?php echo $accessionUrl; ?>" target="_blank"><?php echo $accessionNumber; ?></a> (<?php echo $accessionUrl; ?>)</li>
+    <?php } //end foreach
+    if (count($rs2)>0) {
+        ?>
+            </ol>
+        </div>
+        <?php
+    }
+}
+
+
+function renderSectionBody(string $text, ?int $sectionId): string
+{
+    if (isset($sectionId) && $sectionId == 7000) {
+        $filteredReferences = array_map(
+            fn($ref) => '<li>' . preg_replace('/^(\d+\.)/i','',$ref) . '</li>',
+            explode("\n", htmlentities($text))
+        );
+        return '<div class="sectiondiv" ><ol>'.implode("\n", $filteredReferences).'</ol></div>';
+    } else {
+        $htmlentitiesText = htmlentities($text);
+        return <<<HTML
+        <div class="sectiondiv prew" >$htmlentitiesText</div>
+HTML;
+
+    }
+}
 
 ?>
 <!DOCTYPE html>
@@ -195,8 +255,6 @@ try {
         figcaption {
             padding-left: 0.2em;
         }
-
-
     </style>
 </head>
 <body>
@@ -213,9 +271,11 @@ try {
     foreach ($rs as $row) {
 ?>
         <h2><?=$row["section_title"]?></h2>
-        <div class="sectiondiv prew" ><?=htmlentities($row["text"])?></div>
-
+        <?=renderSectionBody($row["text"],$row['section_id'])?>
 <?php
+        if ($CONF['reference_ngb_numbers'] && $row['section_id']==7) {
+            createInformationSystemAccessionReferences($bgsrow['stock_number_int']);
+        }
     } //End loop through all sections
 ?>
     </div>

@@ -529,3 +529,28 @@ textarea {
 button {
 	padding: 0;
 }
+
+
+div.sectiondiv ol {
+	padding-inline-start: 1.5em;
+	margin-top: 0 !important;
+}
+
+
+dl.nl {
+	display: grid;
+	grid-template-columns: max-content auto;
+}
+
+dl.nl > dt {
+	grid-column-start: 1;
+	text-align: right;
+}
+dl.nl > dt::after {
+	content: '.';
+}
+
+dl.nl > dd {
+	grid-column-start: 2;
+	margin-inline-start: 1em;
+}

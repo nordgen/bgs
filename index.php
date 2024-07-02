@@ -130,7 +130,8 @@ SQL;
             //echo "<br>C-query: ".$q."<br>";
 
             try {
-                $category_res = $Zdb->query($q)->getQueryResult();
+                //$category_res = $Zdb->query($q)->getQueryResult();
+                $category_res = $Zdb->queryALl($q);
                 //echo "<br>".$q."<br>";
             } catch (exception $e) {
                 echo "Error doing: " . $q . " - " . $e->getMessage();
@@ -158,7 +159,8 @@ SQL;
             //echo "<br>D-query: ".$q."<br>";
 
             try {
-                $docid_res = $Zdb->query($q)->getQueryResult();
+                //$docid_res = $Zdb->query($q)->getQueryResult();
+                $docid_res = $Zdb->queryALl($q);
                 //echo "<br>".$q."<br>";
             } catch (exception $e) {
                 echo "Error doing: " . $q . " - " . $e->getMessage();
